@@ -1,0 +1,83 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    border: none;
+    transition: 0.5s;
+}
+
+.calculator {
+    display: flex;
+    flex-flow: column;
+    flex: 0 0 auto;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    width: 360px;
+    height: 90px;
+}
+
+.calculator,
+.row {
+    gap: 2px;
+}
+
+.col {
+    border-radius: 15px;
+    flex: 1;
+    font-family: 'Ubuntu Mono', monospace, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.col.digit.zero {
+    flex: 2;
+}
+
+.row.input {
+    align-items: center;
+    text-align: right;
+}
+
+.row.input .col {
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 0 20px;
+    background-color: midnightblue;
+    color: rgb(225, 255, 255);
+}
+
+.digit {
+    background-color: rgb(12, 12, 51);
+    color: azure;
+}
+
+.digit:hover {
+    color: midnightblue;
+}
+
+.operator {
+    background-color: burlywood;
+    color: rgb(12, 12, 51);
+}
+
+.misc {
+    background-color: chocolate;
+    color: lemonchiffon;
+}
+
+.digit:hover, .digit:focus,
+.operator:hover, .operator:focus,
+.misc:hover, .misc:focus {
+    background-color: bisque;
+    color: midnightblue;
+}
