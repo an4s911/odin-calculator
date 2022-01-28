@@ -75,9 +75,13 @@ button {
     color: lemonchiffon;
 }
 
-.digit:hover, .digit:focus,
-.operator:hover, .operator:focus,
-.misc:hover, .misc:focus {
+.digit:hover,
+.misc:hover {
     background-color: bisque;
     color: midnightblue;
+}
+
+.operator:hover {
+    background-color: midnightblue;
+    color: bisque;
 }
