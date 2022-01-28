@@ -68,11 +68,9 @@ const digitPressed = (digit) => {
     );
 };
 
-const clearDisplay = (event) => {
+const clearDisplay = (clearType) => {
     // all-clear: clears everything that is done so far, clear, the operands and operator
     // clear-entry: clears the current display so that it can be typed again, similar to backspacing until 0
-
-    const clearType = event.target.id; // either all-clear or clear-entry
 
     if (clearType === 'backspace') {
         backspaceDisplay();
@@ -166,6 +164,12 @@ const handleKeyboardInput = (event) => {
         '=': 'equal'
     }
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    const clearKeys = {
+        'Backspace': 'backspace',
+        'Delete': 'all-clear',
+        'c': 'clear-entry',
+        'C': 'clear-entry'
+    }
 
     const key = event.key;
 
@@ -173,6 +177,8 @@ const handleKeyboardInput = (event) => {
         operatorPressed(operators[key]);
     } else if (numbers.includes(+key)) {
         digitPressed(key);
+    } else if (key in clearKeys) {
+        clearDisplay(clearKeys[key]);
     }
 }
 
@@ -182,7 +188,7 @@ const pressedBtnOfType = (className, func) => {
 };
 
 pressedBtnOfType('.digit', (event) => digitPressed(event.target.id));
-pressedBtnOfType('.misc', clearDisplay);
+pressedBtnOfType('.misc', (event) => clearDisplay(event.target.id));
 pressedBtnOfType('.operator', (event) => operatorPressed(event.target.id));
 
 window.addEventListener('keydown', handleKeyboardInput)
