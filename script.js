@@ -121,6 +121,11 @@ const equalPressed = () => {
         return;
     }
 
+    if (operatorInvolved === 'divide' && operand2 === 0) {
+        setDisplayValue("Error");
+        return;
+    }
+
     const result = operate(operand1, operand2, operatorInvolved);
 
     setDisplayValue(result.toString());

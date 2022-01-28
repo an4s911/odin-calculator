@@ -32,7 +32,7 @@ button {
 .col {
     border-radius: 15px;
     flex: 1;
-    font-family: 'Ubuntu Mono', monospace, sans-serif;
+    font-family: "Ubuntu Mono", monospace, sans-serif;
     font-size: 1.8rem;
     font-weight: 600;
 }
