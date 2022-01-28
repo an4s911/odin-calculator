@@ -36,8 +36,6 @@ const display = document.querySelector('.row.input .col');
 const getDisplayValue = () => display.textContent;
 
 const setDisplayValue = (value) => {
-    console.log(value.toString().length);
-
     if (value.toString().length > 16) {
         display.textContent = (+value).toExponential(10);
     } else {
@@ -45,10 +43,8 @@ const setDisplayValue = (value) => {
     }
 };
 
-const digitPressed = (event) => {
+const digitPressed = (digit) => {
     // function to be run when a digit button or a decimal point button is pressed
-
-    const digit = event.target.id;  // The number being pressed
 
     // if operator is set then reset display
     if (!storage.operatorPressChecked) {
@@ -100,7 +96,7 @@ const backspaceDisplay = () => {
     );
 };
 
-const equalPressed = () => {
+const equalPressed = (deleteOperatorOncePressed=false) => {
     if (!("operand1" in storage)) {
         setDisplayValue('0');
         return;
@@ -135,28 +131,58 @@ const equalPressed = () => {
 
     storage.cachedOperator = operatorInvolved;
     delete storage.operator;
+
+    if (deleteOperatorOncePressed) delete storage.operatorOncePressed;
 }
 
-const operatorPressed = (event) => {
+const operatorPressed = (operatorPressed) => {
     // function that runs when an operator is pressed including equal sign
 
-    const operatorPressed = event.target.id;
-
-    if (operatorPressed === 'equal') {
-        equalPressed();
+    if (operatorPressed === 'equal' || storage.operatorOncePressed) {
+        if (operatorPressed === 'equal') {
+            deleteOperatorOncePressed = true;
+        } else {
+            if (storage.cachedOperator) {
+                storage.operator = storage.cachedOperator;
+            }
+            deleteOperatorOncePressed = false;
+        }
+        equalPressed(deleteOperatorOncePressed);
+        storage.cachedOperator = operatorPressed;
     } else {
         storage.operand1 = +getDisplayValue();
         storage.operator = operatorPressed;
-        storage.operatorPressChecked = false;
+        storage.operatorOncePressed = true;
     }
+    storage.operatorPressChecked = false;
 };
 
+const handleKeyboardInput = (event) => {
+    const operators = {
+        '+': 'add',
+        '-': 'subtract',
+        '*': 'multiply',
+        '/': 'divide',
+        '=': 'equal'
+    }
+    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+
+    const key = event.key;
+
+    if (key in operators) {
+        operatorPressed(operators[key]);
+    } else if (numbers.includes(+key)) {
+        digitPressed(key);
+    }
+}
 
 const pressedBtnOfType = (className, func) => {
     const typeBtns = document.querySelectorAll(className);
     typeBtns.forEach(button => button.addEventListener('click', func));
 };
 
-pressedBtnOfType('.digit', digitPressed);
+pressedBtnOfType('.digit', (event) => digitPressed(event.target.id));
 pressedBtnOfType('.misc', clearDisplay);
-pressedBtnOfType('.operator', operatorPressed);
+pressedBtnOfType('.operator', (event) => operatorPressed(event.target.id));
+
+window.addEventListener('keydown', handleKeyboardInput)
